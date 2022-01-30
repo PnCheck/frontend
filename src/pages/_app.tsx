@@ -1,3 +1,4 @@
+import 'notyf/notyf.min.css';
 import '@/css/styles.css';
 import { AppProps } from 'next/app';
 

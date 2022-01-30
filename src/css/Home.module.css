@@ -37,8 +37,21 @@
 }
 
 .result {
-  font-size: 2.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-top: 0.5rem;
+  border: solid 1px #ccc;
+  padding: 1rem;
+}
+
+.result h4 {
+  font-size: 1.5rem;
   font-weight: 500;
+}
+
+.result span {
+  color: var(--primary);
 }
 
 .title {
@@ -75,6 +88,7 @@
   width: 100%;
   left: 0;
   top: 0;
+  z-index: 1000;
 }
 
 .spinner {
@@ -84,6 +98,16 @@
   border-top: 5px solid var(--primary);
   border-radius: 50%;
   animation: spinner 1s infinite;
+}
+
+.copyright {
+  font-size: 0.9rem;
+  color: var(--primary);
+}
+
+.footer {
+  padding: 1rem;
+  text-align: center;
 }
 
 @keyframes spinner {

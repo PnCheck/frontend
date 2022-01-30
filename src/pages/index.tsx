@@ -5,20 +5,21 @@ import axios from 'axios';
 import { __BASE_URL__, __MODEL_URL__ } from '@/constants';
 import Head from 'next/head';
 import * as tf from '@tensorflow/tfjs';
+import { useFileUpload } from '@/hooks/useFileUpload';
 
 function HomePage() {
-  const [selectedFile, setSelectedFile] = useState<File>();
   const [file, setFile] = useState('');
   const [loading, setLoading] = useState(false);
   const [prediction, setPrediction] = useState();
   const uploaderRef = useRef<HTMLInputElement>(null);
+  const { uploadFile } = useFileUpload();
 
   let model;
 
   const handleFileUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    setLoading(true);
     try {
       const fileURL = URL.createObjectURL(e.target.files[0]);
-      setSelectedFile(e.target.files[0]);
       setFile(fileURL);
 
       const formData = new FormData();
@@ -26,22 +27,26 @@ function HomePage() {
 
       if (!model) model = await tf.loadLayersModel(__MODEL_URL__);
 
-      const response = await axios.post(`${__BASE_URL__}/upload`, formData, {
+      const response = await axios.post(`${__BASE_URL__}/prepare`, formData, {
         headers: {
           'Content-Type': 'multipart/form-data',
         },
       });
 
       const data = response.data;
+      const image = data?.image;
+      const imageSize = [1, 128, 128, 1];
 
-      const processedImage = tf.tensor2d(data);
-      const result = model.predict(tf.reshape(processedImage, [1, 28, 28, 1]));
-      setPrediction(result);
-      // const label = prediction.argMax(1).get([0]);
+      const processedImage = tf.tensor2d(image);
+      const predict = model.predict(tf.reshape(processedImage, imageSize));
+      // const label = predict.argMax(1).get([0]);
 
-      alert(response.data.message);
+      const predictionValue = predict?.dataSync()[0];
+      setPrediction(predictionValue);
+      setLoading(false);
     } catch (error) {
       console.log('File Upload Error', error);
+      setLoading(false);
     }
   };
 
@@ -50,6 +55,8 @@ function HomePage() {
       uploaderRef.current.click();
     }
   };
+
+  const predictionNum = prediction as number;
 
   return (
     <>
@@ -93,10 +100,25 @@ function HomePage() {
                   />
                 )}
               </section>
-              {prediction && <h3 className="result">{prediction}</h3>}
+              {prediction && (
+                <section className={styles.result}>
+                  <h4>
+                    Classification:{' '}
+                    <span>
+                      {predictionNum > 0.5 ? 'Pneumonia' : 'No Pneumonia'}
+                    </span>
+                  </h4>
+                  <h4>
+                    Probability: <span>{(prediction * 100).toFixed(2)}%</span>
+                  </h4>
+                </section>
+              )}
             </form>
           </section>
         </section>
+        <footer className={styles.footer}>
+          <p className={styles.copyright}>&copy; 2022. PnCheck</p>
+        </footer>
       </main>
     </>
   );
