@@ -109,7 +109,8 @@ function HomePage() {
                     </span>
                   </h4>
                   <h4>
-                    Probability: <span>{(prediction * 100).toFixed(2)}%</span>
+                    Pneumonia Probability:{' '}
+                    <span>{(prediction * 100).toFixed(2)}%</span>
                   </h4>
                 </section>
               )}
