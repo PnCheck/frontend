@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import axios from 'axios';
 import { __BASE_URL__ } from '@/constants';
+import Resizer from 'react-image-file-resizer';
 
 export function useFileUpload() {
   const [selectedFile, setSelectedFile] = useState<File>();
@@ -35,7 +36,23 @@ export function useFileUpload() {
     }
   };
 
+  const resizeImage = (fileInput: File) => {
+    return new Promise((resolve) => {
+      return Resizer.imageFileResizer(
+        fileInput,
+        300,
+        300,
+        'JPEG',
+        100,
+        0,
+        (uri) => resolve(uri),
+        'blob',
+      );
+    });
+  };
+
   return {
     uploadFile,
+    resizeImage,
   };
 }

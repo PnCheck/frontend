@@ -6,20 +6,23 @@ import { __BASE_URL__, __MODEL_URL__ } from '@/constants';
 import Head from 'next/head';
 import * as tf from '@tensorflow/tfjs';
 import { useFileUpload } from '@/hooks/useFileUpload';
+import Footer from '@/components/Footer';
 
 function HomePage() {
   const [file, setFile] = useState('');
   const [loading, setLoading] = useState(false);
   const [prediction, setPrediction] = useState();
   const uploaderRef = useRef<HTMLInputElement>(null);
-  const { uploadFile } = useFileUpload();
+  const [showTooltip, setShowTooltip] = useState(false);
+  const { resizeImage } = useFileUpload();
 
   let model;
 
   const handleFileUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
     setLoading(true);
     try {
-      const fileURL = URL.createObjectURL(e.target.files[0]);
+      const resizedImage = await resizeImage(e.target.files[0]);
+      const fileURL = URL.createObjectURL(resizedImage as Blob);
       setFile(fileURL);
 
       const formData = new FormData();
@@ -71,13 +74,37 @@ function HomePage() {
         )}
         <section className={styles.inner}>
           <h3 className={styles.title}>PnCheck</h3>
+          <section style={{ position: 'relative' }}>
+            <h6 className={styles.subtitle}>
+              Web app to detect Pneumonia in Chest X-rays.
+              <button
+                type="button"
+                className={styles.info}
+                onMouseOut={() => setShowTooltip(false)}
+                onMouseOver={() => setShowTooltip(true)}
+                onClick={() => setShowTooltip(!showTooltip)}
+              >
+                &#9432;
+              </button>
+            </h6>
+            {showTooltip && (
+              <div className={styles.tooltip}>
+                <p>
+                  A web app that uses a pretrained Convolution Neural Network
+                  model to be able to make client-side predictions for the
+                  classification of chest X-ray images to having or not having
+                  Pneumonia
+                </p>
+              </div>
+            )}
+          </section>
           <section className={styles.start}>
             <form method="POST" className={styles.form}>
               <input
                 accept="image/*"
                 type="file"
                 onChange={handleFileUpload}
-                style={{ visibility: 'hidden' }}
+                style={{ display: 'none' }}
                 ref={uploaderRef}
               />
               <button
@@ -89,15 +116,7 @@ function HomePage() {
               </button>
               <section className={styles.view}>
                 {file && (
-                  <Image
-                    src={{
-                      src: file,
-                      width: 300,
-                      height: 300,
-                    }}
-                    alt="xray of a human thorax"
-                    objectFit="cover"
-                  />
+                  <Image src={file} alt="xray of a human chest" layout="fill" />
                 )}
               </section>
               {prediction && (
@@ -117,9 +136,7 @@ function HomePage() {
             </form>
           </section>
         </section>
-        <footer className={styles.footer}>
-          <p className={styles.copyright}>&copy; 2022. PnCheck</p>
-        </footer>
+        <Footer />
       </main>
     </>
   );
