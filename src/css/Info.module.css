@@ -1,5 +1,30 @@
 .description {
   text-align: justify;
   color: var(--black);
-  font-size: 0.9rem;
+  font-size: 1rem;
+}
+
+.title {
+  font-size: 1.25rem;
+  color: var(--primary);
+  text-align: center;
+  margin: 0.75rem 0;
+}
+
+.display {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-auto-rows: 300px;
+  gap: 0.5rem;
+}
+
+.box {
+  position: relative;
+}
+
+@media screen and (max-width: 576px) {
+  .display {
+    grid-template-columns: 1fr;
+    gap: 0.75rem;
+  }
 }
