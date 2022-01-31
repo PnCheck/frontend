@@ -1,9 +1,39 @@
 .copyright {
   font-size: 0.9rem;
   color: var(--primary);
+  font-weight: 600;
 }
 
 .footer {
   padding: 1rem;
   text-align: center;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.start {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.start h3 {
+  font-size: 1.5rem;
+  padding-bottom: 0.25rem;
+  text-decoration: underline;
+  color: var(--primary);
+}
+
+.start h4 {
+  font-size: 1rem;
+  color: var(--primary);
+  font-weight: 600;
+}
+
+.start p {
+  font-size: 0.9rem;
+  color: var(--black);
+  line-height: 1.5;
+  text-align: justify;
 }

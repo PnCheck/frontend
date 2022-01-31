@@ -46,16 +46,3 @@
   cursor: pointer;
   font-weight: 600;
 }
-
-@media screen and (max-width: 576px) {
-  .inner {
-    width: 100%;
-    margin: none;
-  }
-}
-
-@media screen and (max-width: 768px) {
-  .inner {
-    width: 80%;
-  }
-}
