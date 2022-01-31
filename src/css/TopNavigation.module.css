@@ -1,0 +1,35 @@
+.navbar {
+  display: flex;
+  padding: 0.5rem 1rem;
+  align-items: center;
+  justify-content: center;
+}
+
+.items {
+  list-style-type: none;
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.item {
+  /* item styling */
+  border-bottom: solid 1px transparent;
+}
+
+.link {
+  display: block;
+  color: var(--black);
+  text-decoration: none;
+  font-weight: 600;
+  padding: 0 0.5rem;
+  border-bottom: solid 2px transparent;
+  /* text-transform: uppercase; */
+}
+
+.link.active,
+.link:hover {
+  color: var(--primary);
+  border-bottom-color: var(--primary);
+}

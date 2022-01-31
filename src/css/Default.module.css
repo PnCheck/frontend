@@ -52,6 +52,7 @@
   border: solid 1px #ccc;
   padding: 0.5rem;
   width: 100%;
+  z-index: 100;
 }
 
 .tooltip p {

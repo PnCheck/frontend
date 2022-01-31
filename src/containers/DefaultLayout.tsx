@@ -1,7 +1,8 @@
 import styles from '@/css/Default.module.css';
 import Head from 'next/head';
-import React, { useState } from 'react';
+import React from 'react';
 import Footer from '@/components/Footer';
+import TopNavigation from '@/components/TopNavigation';
 
 type Props = {
   title?: string;
@@ -10,7 +11,7 @@ type Props = {
 };
 
 function DefaultLayout({ title, children, loading }: Props) {
-  const [showTooltip, setShowTooltip] = useState(false);
+  // const [showTooltip, setShowTooltip] = useState(false);
 
   return (
     <React.Fragment>
@@ -30,7 +31,7 @@ function DefaultLayout({ title, children, loading }: Props) {
           <section style={{ position: 'relative' }}>
             <h6 className={styles.subtitle}>
               Web app to detect Pneumonia in Chest X-rays.
-              <button
+              {/* <button
                 type="button"
                 className={styles.info}
                 onMouseOut={() => setShowTooltip(false)}
@@ -38,18 +39,16 @@ function DefaultLayout({ title, children, loading }: Props) {
                 onClick={() => setShowTooltip(!showTooltip)}
               >
                 &#9432;
-              </button>
+              </button> */}
             </h6>
-            {showTooltip && (
+            {/* {showTooltip && (
               <div className={styles.tooltip}>
                 <p>
-                  A web app that uses a pretrained Convolution Neural Network
-                  model to be able to make client-side predictions for the
-                  classification of chest X-ray images to having or not having
-                  Pneumonia
+                 
                 </p>
               </div>
-            )}
+            )} */}
+            <TopNavigation />
           </section>
           <section className={styles.start}>{children}</section>
           <Footer />
