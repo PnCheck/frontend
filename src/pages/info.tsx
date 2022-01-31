@@ -17,6 +17,8 @@ function Info() {
             src="/images/normal1.jpeg"
             alt="normal chest x-ray"
             layout="fill"
+            placeholder="blur"
+            blurDataURL="/images/placeholder.png"
           />
         </section>
         <section className={styles.box}>
@@ -24,6 +26,8 @@ function Info() {
             src="/images/pneumonia2.jpeg"
             alt="pneumonic chest x-ray"
             layout="fill"
+            placeholder="blur"
+            blurDataURL="/images/placeholder.png"
           />
         </section>
       </section>
