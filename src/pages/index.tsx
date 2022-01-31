@@ -5,12 +5,15 @@ import { useFileUpload } from '@/hooks/useFileUpload';
 import * as tf from '@tensorflow/tfjs';
 import axios from 'axios';
 import Image from 'next/image';
-import { useRef, useState } from 'react';
+import { useRef, useState, useEffect } from 'react';
+import { Notyf } from 'notyf';
 
 function HomePage() {
   const [file, setFile] = useState('');
   const [loading, setLoading] = useState(false);
   const [prediction, setPrediction] = useState();
+  const [notyf, setNotyf] = useState<Notyf>();
+
   const uploaderRef = useRef<HTMLInputElement>(null);
 
   const { resizeImage } = useFileUpload();
@@ -20,12 +23,13 @@ function HomePage() {
   const handleFileUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
     setLoading(true);
     try {
-      const resizedImage = await resizeImage(e.target.files[0]);
+      const selectedFile = e.target.files?.[0];
+      const resizedImage = await resizeImage(selectedFile);
       const fileURL = URL.createObjectURL(resizedImage as Blob);
       setFile(fileURL);
 
       const formData = new FormData();
-      formData.append('file', e.target.files[0]);
+      formData.append('file', selectedFile);
 
       if (!model) model = await tf.loadLayersModel(__MODEL_URL__);
 
@@ -43,11 +47,12 @@ function HomePage() {
       const predict = model.predict(tf.reshape(processedImage, imageSize));
       // const label = predict.argMax(1).get([0]);
 
-      const predictionValue = predict?.dataSync()[0];
+      const predictionValue = predict?.dataSync()?.[0];
       setPrediction(predictionValue);
       setLoading(false);
     } catch (error) {
-      console.log('File Upload Error', error);
+      // console.log('File Upload Error', error?.message);
+      notyf?.error(error.message);
       setLoading(false);
     }
   };
@@ -60,8 +65,20 @@ function HomePage() {
 
   const predictionNum = prediction as number;
 
+  useEffect(() => {
+    let isMounted = true;
+
+    if (isMounted) {
+      setNotyf(new Notyf());
+    }
+
+    return () => {
+      isMounted = false;
+    };
+  }, []);
+
   return (
-    <DefaultLayout loading={loading}>
+    <DefaultLayout loading={loading} hasDisclaimer>
       <form method="POST" className={styles.form}>
         <input
           accept="image/*"

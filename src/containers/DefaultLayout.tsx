@@ -8,9 +8,10 @@ type Props = {
   title?: string;
   children: React.ReactNode;
   loading?: boolean;
+  hasDisclaimer?: boolean;
 };
 
-function DefaultLayout({ title, children, loading }: Props) {
+function DefaultLayout({ title, children, loading, hasDisclaimer }: Props) {
   // const [showTooltip, setShowTooltip] = useState(false);
 
   return (
@@ -27,11 +28,12 @@ function DefaultLayout({ title, children, loading }: Props) {
       )}
       <main className={styles.wrapper}>
         <section className={styles.inner}>
-          <h3 className={styles.title}>PnCheck</h3>
-          <section style={{ position: 'relative' }}>
-            <h6 className={styles.subtitle}>
-              Web app to detect Pneumonia in Chest X-rays.
-              {/* <button
+          <section className={styles.start}>
+            <h3 className={styles.title}>PnCheck</h3>
+            <section style={{ position: 'relative' }}>
+              <h6 className={styles.subtitle}>
+                Web app to detect Pneumonia in Chest X-rays.
+                {/* <button
                 type="button"
                 className={styles.info}
                 onMouseOut={() => setShowTooltip(false)}
@@ -40,18 +42,19 @@ function DefaultLayout({ title, children, loading }: Props) {
               >
                 &#9432;
               </button> */}
-            </h6>
-            {/* {showTooltip && (
+              </h6>
+              {/* {showTooltip && (
               <div className={styles.tooltip}>
                 <p>
                  
                 </p>
               </div>
             )} */}
-            <TopNavigation />
+              <TopNavigation />
+            </section>
+            <section className={styles.content}>{children}</section>
           </section>
-          <section className={styles.start}>{children}</section>
-          <Footer />
+          <Footer hasDisclaimer={hasDisclaimer} />
         </section>
       </main>
     </React.Fragment>
