@@ -16,6 +16,4 @@ function OurAPI() {
   );
 }
 
-async function getStaticProps() {}
-
 export default OurAPI;

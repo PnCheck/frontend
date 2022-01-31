@@ -13,6 +13,4 @@ function Info() {
   );
 }
 
-async function getStaticProps() {}
-
 export default Info;
