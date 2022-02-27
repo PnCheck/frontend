@@ -3,6 +3,7 @@ import Head from 'next/head';
 import React from 'react';
 import Footer from '@/components/Footer';
 import TopNavigation from '@/components/TopNavigation';
+import Image from 'next/image';
 
 type Props = {
   title?: string;
@@ -29,10 +30,15 @@ function DefaultLayout({ title, children, loading, hasDisclaimer }: Props) {
       <main className={styles.wrapper}>
         <section className={styles.inner}>
           <section className={styles.start}>
-            <h3 className={styles.title}>PnCheck</h3>
+            {/* <h3 className={styles.title}>PnCheck</h3> */}
+          
+          <Image src="/images/PnCheck_mod.png" height="500px" width="500px"/> 
+
+
             <section style={{ position: 'relative' }}>
               <h6 className={styles.subtitle}>
-                Web app to detect Pneumonia in Chest X-rays.
+                Web app to detect Pneumonia in Chest X-rays. Ghidra reverse engineering of the PnCheck model
+
                 {/* <button
                 type="button"
                 className={styles.info}
